@@ -1,5 +1,6 @@
 package br.com.products.api.modules.product.model;
 
+import br.com.products.api.modules.category.model.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

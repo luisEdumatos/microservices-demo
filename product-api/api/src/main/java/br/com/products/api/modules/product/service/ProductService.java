@@ -10,6 +10,9 @@ import br.com.products.api.modules.supplier.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Service
@@ -21,6 +24,56 @@ public class ProductService {
     private SupplierService supplierService;
     @Autowired
     private CategoryService categoryService;
+
+    public List<ProductResponse> findAll() {
+        return productRepository
+                .findAll()
+                .stream()
+                .map(ProductResponse::of)
+                .collect(Collectors.toList());
+    }
+
+    public Product findById(Integer id) {
+        return productRepository
+                .findById(id)
+                .orElseThrow(() -> new ValidationException("There's no product for the given ID."));
+    }
+
+    public List<ProductResponse> findByName(String name) {
+        if (isEmpty(name)) {
+            throw new ValidationException("The Product's name must be informed. ");
+        }
+
+        return productRepository
+                .findByNameIgnoreCaseContaining(name)
+                .stream()
+                .map(ProductResponse::of)
+                .collect(Collectors.toList());
+    }
+
+    public List<ProductResponse> findBySupplierId(Integer supplierId) {
+        if (isEmpty(supplierId)) {
+            throw new ValidationException("The Product's supplier Id must be informed. ");
+        }
+
+        return productRepository
+                .findBySupplierId(supplierId)
+                .stream()
+                .map(ProductResponse::of)
+                .collect(Collectors.toList());
+    }
+
+    public List<ProductResponse> findByCategoryId(Integer categoryId) {
+        if (isEmpty(categoryId)) {
+            throw new ValidationException("The Product's category Id must be informed. ");
+        }
+
+        return productRepository
+                .findByCategoryId(categoryId)
+                .stream()
+                .map(ProductResponse::of)
+                .collect(Collectors.toList());
+    }
 
     public ProductResponse save(ProductRequest request) {
         validateProductDataInformed(request);

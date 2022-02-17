@@ -2,7 +2,6 @@ package br.com.products.api.modules.category.controller;
 
 import br.com.products.api.modules.category.dto.CategoryRequest;
 import br.com.products.api.modules.category.dto.CategoryResponse;
-import br.com.products.api.modules.category.model.Category;
 import br.com.products.api.modules.category.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

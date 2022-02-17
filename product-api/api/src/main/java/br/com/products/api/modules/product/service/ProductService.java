@@ -1,11 +1,15 @@
 package br.com.products.api.modules.product.service;
 
+import br.com.products.api.config.exception.SuccessResponse;
 import br.com.products.api.config.exception.ValidationException;
 import br.com.products.api.modules.category.service.CategoryService;
 import br.com.products.api.modules.product.dto.ProductRequest;
 import br.com.products.api.modules.product.dto.ProductResponse;
 import br.com.products.api.modules.product.model.Product;
 import br.com.products.api.modules.product.repository.ProductRepository;
+import br.com.products.api.modules.supplier.dto.SupplierRequest;
+import br.com.products.api.modules.supplier.dto.SupplierResponse;
+import br.com.products.api.modules.supplier.model.Supplier;
 import br.com.products.api.modules.supplier.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,6 +88,22 @@ public class ProductService {
         return ProductResponse.of(product);
     }
 
+    public SuccessResponse delete(Integer id) {
+        productRepository.deleteById(id);
+        return SuccessResponse.create("The product was deleted");
+    }
+
+    public ProductResponse update(ProductRequest request, Integer id) {
+        validateProductDataInformed(request);
+        findById(id);
+        var category = categoryService.findById(request.getCategoryId());
+        var supplier = supplierService.findById(request.getSupplierId());
+        var product = Product.of(request, supplier, category);
+        product.setId(id);
+        productRepository.save(product);
+        return ProductResponse.of(product);
+    }
+
     private void validateProductDataInformed(ProductRequest request) {
         if (isEmpty(request.getName())) {
             throw new ValidationException("The product's name was not informed.");
@@ -103,5 +123,13 @@ public class ProductService {
         if (isEmpty(request.getSupplierId())) {
             throw new ValidationException("The supplier ID was not informed.");
         }
+    }
+
+    public Boolean existsByCategoryId(Integer categoryId) {
+        return productRepository.existsByCategoryId(categoryId);
+    }
+
+    public Boolean existsBySupplierId(Integer supplierId) {
+        return productRepository.existsBySupplierId(supplierId);
     }
 }

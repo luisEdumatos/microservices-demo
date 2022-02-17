@@ -1,5 +1,6 @@
 package br.com.products.api.modules.product.controller;
 
+import br.com.products.api.config.exception.SuccessResponse;
 import br.com.products.api.modules.product.dto.ProductRequest;
 import br.com.products.api.modules.product.dto.ProductResponse;
 import br.com.products.api.modules.product.service.ProductService;
@@ -45,4 +46,13 @@ public class ProductController {
         return productService.findBySupplierId(supplierId);
     }
 
+    @PutMapping("{id}")
+    public ProductResponse update(@RequestBody ProductRequest productRequest, @PathVariable Integer id) {
+        return productService.update(productRequest, id);
+    }
+
+    @DeleteMapping("{id}")
+    public SuccessResponse delete(@PathVariable Integer id) {
+        return productService.delete(id);
+    }
 }

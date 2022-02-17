@@ -1,6 +1,9 @@
 package br.com.products.api.modules.supplier.service;
 
+import br.com.products.api.config.exception.SuccessResponse;
 import br.com.products.api.config.exception.ValidationException;
+import br.com.products.api.modules.product.repository.ProductRepository;
+import br.com.products.api.modules.product.service.ProductService;
 import br.com.products.api.modules.supplier.dto.SupplierRequest;
 import br.com.products.api.modules.supplier.dto.SupplierResponse;
 import br.com.products.api.modules.supplier.model.Supplier;
@@ -18,6 +21,9 @@ public class SupplierService {
 
     @Autowired
     private SupplierRepository supplierRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     public List<SupplierResponse> findAll() {
         return supplierRepository
@@ -55,5 +61,22 @@ public class SupplierService {
         if (isEmpty(request.getName())) {
             throw new ValidationException("The supplier's name was not informed.");
         }
+    }
+
+    public SuccessResponse delete(Integer id) {
+        if (productRepository.existsBySupplierId(id)) {
+            throw new ValidationException("You cannot delete this supplier because it's already defined by a product. ");
+        }
+        supplierRepository.deleteById(id);
+        return SuccessResponse.create("The supplier was deleted.");
+    }
+
+    public SupplierResponse update(SupplierRequest request, Integer id) {
+        validateSupplierNameInformed(request);
+        findById(id);
+        var supplier = Supplier.of(request);
+        supplier.setId(id);
+        supplierRepository.save(supplier);
+        return SupplierResponse.of(supplier);
     }
 }

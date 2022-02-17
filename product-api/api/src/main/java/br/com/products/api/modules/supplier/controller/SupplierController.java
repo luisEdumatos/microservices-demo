@@ -1,5 +1,8 @@
 package br.com.products.api.modules.supplier.controller;
 
+import br.com.products.api.config.exception.SuccessResponse;
+import br.com.products.api.modules.product.dto.ProductRequest;
+import br.com.products.api.modules.product.dto.ProductResponse;
 import br.com.products.api.modules.supplier.dto.SupplierRequest;
 import br.com.products.api.modules.supplier.dto.SupplierResponse;
 import br.com.products.api.modules.supplier.service.SupplierService;
@@ -33,5 +36,15 @@ public class SupplierController {
     @GetMapping("name/{name}")
     public List<SupplierResponse> findByName(@PathVariable String name) {
         return supplierService.findByName(name);
+    }
+
+    @PutMapping("{id}")
+    public SupplierResponse update(@RequestBody SupplierRequest supplierRequest, @PathVariable Integer id) {
+        return supplierService.update(supplierRequest, id);
+    }
+
+    @DeleteMapping("{id}")
+    public SuccessResponse delete(@PathVariable Integer id) {
+        return supplierService.delete(id);
     }
 }

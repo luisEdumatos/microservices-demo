@@ -1,15 +1,16 @@
 package br.com.products.api.modules.category.service;
 
+import br.com.products.api.config.exception.SuccessResponse;
 import br.com.products.api.config.exception.ValidationException;
 import br.com.products.api.modules.category.dto.CategoryRequest;
 import br.com.products.api.modules.category.dto.CategoryResponse;
 import br.com.products.api.modules.category.model.Category;
 import br.com.products.api.modules.category.repository.CategoryRepository;
-import br.com.products.api.modules.supplier.model.Supplier;
+import br.com.products.api.modules.product.repository.ProductRepository;
+import br.com.products.api.modules.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,9 @@ public class CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     public List<CategoryResponse> findAll() {
         return categoryRepository
@@ -57,5 +61,22 @@ public class CategoryService {
         if (isEmpty(request.getDescription())) {
             throw new ValidationException("The category description was not informed.");
         }
+    }
+
+    public SuccessResponse delete(Integer id) {
+        if (productRepository.existsByCategoryId(id)) {
+            throw new ValidationException("You cannot delete this category because it's already defined by a product. ");
+        }
+        categoryRepository.deleteById(id);
+        return SuccessResponse.create("The category was deleted.");
+    }
+
+    public CategoryResponse update(CategoryRequest request, Integer id) {
+        validateCategoryNameInformed(request);
+        findById(id);
+        var category = Category.of(request);
+        category.setId(id);
+        categoryRepository.save(category);
+        return CategoryResponse.of(category);
     }
 }

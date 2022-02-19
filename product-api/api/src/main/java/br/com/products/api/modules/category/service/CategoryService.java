@@ -71,7 +71,7 @@ public class CategoryService {
             throw new ValidationException("The category description was not informed.");
         }
     }
-    
+
     public SuccessResponse delete(Integer id) {
         if (productRepository.existsByCategoryId(id)) {
             throw new ValidationException("You cannot delete this category because it's already defined by a product. ");

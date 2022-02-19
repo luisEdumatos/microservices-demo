@@ -16,11 +16,6 @@ public class SupplierController {
     @Autowired
     private SupplierService supplierService;
 
-    @PostMapping
-    public SupplierResponse save(@RequestBody SupplierRequest supplierRequest) {
-        return supplierService.save(supplierRequest);
-    }
-
     @GetMapping
     public List<SupplierResponse> findAll() {
         return supplierService.findAll();
@@ -28,12 +23,17 @@ public class SupplierController {
 
     @GetMapping("{id}")
     public SupplierResponse findById(@PathVariable Integer id) {
-        return SupplierResponse.of(supplierService.findById(id));
+        return supplierService.findById(id);
     }
 
     @GetMapping("name/{name}")
     public List<SupplierResponse> findByName(@PathVariable String name) {
         return supplierService.findByName(name);
+    }
+
+    @PostMapping
+    public SupplierResponse save(@RequestBody SupplierRequest supplierRequest) {
+        return supplierService.save(supplierRequest);
     }
 
     @PutMapping("{id}")

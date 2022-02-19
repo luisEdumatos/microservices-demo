@@ -32,10 +32,12 @@ public class SupplierService {
                 .collect(Collectors.toList());
     }
 
-    public Supplier findById(Integer id) {
-        return supplierRepository
+    public SupplierResponse findById(Integer id) {
+        Supplier supplier = supplierRepository
                 .findById(id)
                 .orElseThrow(() -> new ValidationException("There's no supplier for the given ID."));
+
+        return SupplierResponse.of(supplier);
     }
 
     public List<SupplierResponse> findByName(String name) {
@@ -56,6 +58,15 @@ public class SupplierService {
         return SupplierResponse.of(supplier);
     }
 
+    public SupplierResponse update(SupplierRequest request, Integer id) {
+        validateSupplierNameInformed(request);
+        findById(id);
+        var supplier = Supplier.of(request);
+        supplier.setId(id);
+        supplierRepository.save(supplier);
+        return SupplierResponse.of(supplier);
+    }
+
     private void validateSupplierNameInformed(SupplierRequest request) {
         if (isEmpty(request.getName())) {
             throw new ValidationException("The supplier's name was not informed.");
@@ -68,14 +79,5 @@ public class SupplierService {
         }
         supplierRepository.deleteById(id);
         return SuccessResponse.create("The supplier was deleted.");
-    }
-
-    public SupplierResponse update(SupplierRequest request, Integer id) {
-        validateSupplierNameInformed(request);
-        findById(id);
-        var supplier = Supplier.of(request);
-        supplier.setId(id);
-        supplierRepository.save(supplier);
-        return SupplierResponse.of(supplier);
     }
 }

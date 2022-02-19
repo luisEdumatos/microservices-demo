@@ -1,7 +1,9 @@
 package br.com.products.api.modules.product.model;
 
+import br.com.products.api.modules.category.dto.CategoryResponse;
 import br.com.products.api.modules.category.model.Category;
 import br.com.products.api.modules.product.dto.ProductRequest;
+import br.com.products.api.modules.supplier.dto.SupplierResponse;
 import br.com.products.api.modules.supplier.model.Supplier;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,7 +47,15 @@ public class Product {
         createdAt = LocalDateTime.now();
     }
 
-    public static Product of(ProductRequest request, Supplier supplier, Category category) {
+    public static Product of(ProductRequest request, SupplierResponse supplierResponse, CategoryResponse categoryResponse) {
+        Supplier supplier = new Supplier();
+        supplier.setId(supplierResponse.getId());
+        supplier.setName(supplierResponse.getName());
+
+        Category category = new Category();
+        category.setId(categoryResponse.getId());
+        category.setDescription(category.getDescription());
+
         return Product
                 .builder()
                 .name(request.getName())

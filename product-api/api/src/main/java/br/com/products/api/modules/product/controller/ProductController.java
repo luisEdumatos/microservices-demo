@@ -16,11 +16,6 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @PostMapping
-    public ProductResponse save(@RequestBody ProductRequest productRequest) {
-        return productService.save(productRequest);
-    }
-
     @GetMapping
     public List<ProductResponse> findAll() {
         return productService.findAll();
@@ -44,6 +39,11 @@ public class ProductController {
     @GetMapping("supplier/{supplierId}")
     public List<ProductResponse> findBySupplierId(@PathVariable Integer supplierId) {
         return productService.findBySupplierId(supplierId);
+    }
+
+    @PostMapping
+    public ProductResponse save(@RequestBody ProductRequest productRequest) {
+        return productService.save(productRequest);
     }
 
     @PutMapping("{id}")

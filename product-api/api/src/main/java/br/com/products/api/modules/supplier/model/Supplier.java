@@ -1,7 +1,5 @@
 package br.com.products.api.modules.supplier.model;
 
-import br.com.products.api.modules.category.dto.CategoryRequest;
-import br.com.products.api.modules.category.model.Category;
 import br.com.products.api.modules.supplier.dto.SupplierRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;

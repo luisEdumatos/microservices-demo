@@ -1,8 +1,6 @@
 package br.com.products.api.modules.supplier.controller;
 
 import br.com.products.api.config.exception.SuccessResponse;
-import br.com.products.api.modules.product.dto.ProductRequest;
-import br.com.products.api.modules.product.dto.ProductResponse;
 import br.com.products.api.modules.supplier.dto.SupplierRequest;
 import br.com.products.api.modules.supplier.dto.SupplierResponse;
 import br.com.products.api.modules.supplier.service.SupplierService;

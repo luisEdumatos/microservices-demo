@@ -3,7 +3,6 @@ package br.com.products.api.modules.supplier.service;
 import br.com.products.api.config.exception.SuccessResponse;
 import br.com.products.api.config.exception.ValidationException;
 import br.com.products.api.modules.product.repository.ProductRepository;
-import br.com.products.api.modules.product.service.ProductService;
 import br.com.products.api.modules.supplier.dto.SupplierRequest;
 import br.com.products.api.modules.supplier.dto.SupplierResponse;
 import br.com.products.api.modules.supplier.model.Supplier;

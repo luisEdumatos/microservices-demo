@@ -5,6 +5,7 @@ import br.com.products.api.config.exception.ValidationException;
 import br.com.products.api.modules.category.service.CategoryService;
 import br.com.products.api.modules.product.dto.ProductRequest;
 import br.com.products.api.modules.product.dto.ProductResponse;
+import br.com.products.api.modules.product.dto.ProductStockDTO;
 import br.com.products.api.modules.product.model.Product;
 import br.com.products.api.modules.product.repository.ProductRepository;
 import br.com.products.api.modules.supplier.service.SupplierService;
@@ -129,5 +130,9 @@ public class ProductService {
 
     public Boolean existsBySupplierId(Integer supplierId) {
         return productRepository.existsBySupplierId(supplierId);
+    }
+
+    public void updateProductStock(ProductStockDTO product) {
+
     }
 }
